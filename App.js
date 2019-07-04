@@ -6,24 +6,46 @@
  * @flow
  */
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import React, { Component } from 'react';
+import { Platform, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import ImagePicker from 'react-native-image-crop-picker';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+export default class App extends Component {
+  launchImagePicker = () => {
+    ImagePicker.openPicker({
+      multiple: true,
+    }).then(images => {
+      console.log(images);
+    });
+  };
+  openCamera = () => {
+    ImagePicker.openCamera({
+      width: 300,
+      height: 400,
+      cropping: true,
+    }).then(image => {
+      console.log(image);
+    });
+  };
 
-type Props = {};
-export default class App extends Component<Props> {
+  takeVideo = () =>
+    ImagePicker.openCamera({
+      mediaType: 'video',
+    }).then(image => {
+      console.log(image);
+    });
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
+        <TouchableOpacity onPress={this.launchImagePicker}>
+          <Text style={styles.welcome}>Select multiple images</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={this.openCamera}>
+          <Text style={styles.welcome}>Open Camera</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={this.takeVideo}>
+          <Text style={styles.welcome}>Take a Video</Text>
+        </TouchableOpacity>
       </View>
     );
   }
